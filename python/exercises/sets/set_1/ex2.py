@@ -1,11 +1,13 @@
-'''Define a dictionary with 10 keys. Multiply each key by 10, each value by 5. 
-Finally iterate and Print the new dict.'''
-
-d1={45:9,89:94,60:78,70:54,54:9,89:4,96:3,73:2,45:8,87:5}
-d2={}
-for key,value in d1.items():
-  if(key>10):
-    d2[key*10]=value*5
-for keys in d2.keys():
-  print(key)
-print(d2) 
+'''
+    2. Define a dictionary with 10 keys. Multiply each key by 10, each value by 5.Finally iterate and Print the new dict.
+'''
+# Define original dictionary
+org_dic={10:1,9:2,8:3,7:4,6:5,5:6,4:7,3:8,2:9,1:10}
+#define a new dictionary
+new_dic={}
+#Iterate the dictionary
+for _key,_value in org_dic.items():
+        #Multiply each key by 10, each value by 5
+        new_dic[_key*10]=_value*5
+# Finally print new dictionary        
+print(new_dic)
