@@ -1,4 +1,4 @@
-'''Write a function to take a dict as an argument. Find the key that has maximum value and return the key.'''
+'''Write a function to take a dict as an argument.Find the key that has maximum value and return the key.'''
 
 def maximum_key(org_dic):
 

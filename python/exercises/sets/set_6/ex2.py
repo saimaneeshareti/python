@@ -1,5 +1,5 @@
 ''' 
-   Write a function to take a list. Select the number that is greater than sum of all other numbers.
+   Write a function to take a list.Select the number that is greater than sum of all other numbers.
     Example :
         listA=[1,2,13,4,5]
         result=func_exec(listA)
