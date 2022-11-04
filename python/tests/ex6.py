@@ -1,0 +1,33 @@
+'''
+   Write a function to take a dict as argument. Sort the dict by keys and return the dict.
+	Example : 
+			testDict={1:4,10:20,3:4,4:7,60:11,12:9}
+			result=func_exec(testDict)
+			print(result)
+			Expected Output : {1:4,3:4,4:7,12:9,20:3,60:11}
+            :param org_dic: Original dictionary passed by the User
+            :return: New dic with filtered values ONLY
+            
+Solution Steps:
+**************
+Define the the function 
+  We can take one empty dictionary
+  Iterate the original dictionary 
+  Sort the dictionary keys
+  Sorted keys are add to the empty dictionary 
+  Return the empty dictionary 
+Print empty dictionary          
+'''
+# Iterate the original dict
+def key_sort(dic):
+    # define new dic
+    new_dic={}
+    # iterate and sort original dict dict
+    for _keys in sorted(dic):
+        # Update new dic
+        new_dic[_keys]=dic[_keys]
+    # Finally return new dict    
+    return new_dic
+
+# Function calling
+print(key_sort({1:4,10:20,3:4,4:7,60:11,12:9}))

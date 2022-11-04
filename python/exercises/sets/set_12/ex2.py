@@ -1,17 +1,27 @@
 '''
-Write a function to take a list argument. Find the element that has greatest length.
-    Example :
-        listA=["hello","world","science","maths","Python"]
-        result=func_exec(listA)
-        print(result)
-        Expected Output : ["science"]
-        Reason: length of science -> 7
-    Example :
-        listA=["hello","world","science","maths","Pythonics"]
-        result=func_exec(listA)
-        print(result)
-        Expected Output : ["Pythonics"]
-        Reason: length of Pythonics -> 9
+    Write a function to take a list argument. Find the element that has greatest length.
+
+	Example :
+		listA=["hello","world","science","maths","Python"]
+		result=func_exec(listA)
+		print(result)
+		Expected Output : ["science"]
+		Reason: length of science -> 7
+
+	Example :
+		listA=["hello","world","science","maths","Pythonics"]
+		result=func_exec(listA)
+		print(result)
+		Expected Output : ["Pythonics"]
+		Reason: length of Pythonics -> 9
+
+	Example :
+		listA=["hello","world","science","maths","Pythonics",1000]
+		result=func_exec(listA)
+		print(result)
+		Expected Output : Raise exception since 1000 is an integer
+
+
         :param org_list: Original list passed by the User
         :return: New list with filtered values ONLY.  
     Solution Steps:  
@@ -25,22 +35,22 @@ Write a function to take a list argument. Find the element that has greatest len
             continue loop
 	Finally return the greater length lenth of list					
 '''
-# Define function
+
 def check_word(org_list):
 	# Maximun length is start from 0 
     max_len=0
 	# Iterate the original list
-    for element in org_list:
+    for i in org_list:
 		# Check condition for length of the list is greater than 0
-        if (len(element)>max_len):
+        if (len(i)>max_len):
 			# max length of element from the list
-            max_len=len(element)
+            max_len=len(i)
 			# result is Assign to variable 
-            gre_len=element
+            gre_len=i
 	# Finally return the greatest length word from list			
     return gre_len        
             
-#calling function  
+  
 result=check_word(["hello","world","science","maths","Python"])
 print('Result : {}'.format(result))
 

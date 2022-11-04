@@ -3,33 +3,52 @@
    There are 4 subjects Maths, Physics, Chemistry, CSE
    You need to find the sum of all of the marks obtained above and calcuate grade.
    Here's the table to calculcate the grade
+
    Note: 
-       1. You must use **kwargs
-       2. If the input score is >100 for any subject you must raise exception since max allowed score is 100 ONLY
-       3. If the input score is non-integer, you must raise exception since scores can be in integers ONLY
+   	1. You must use **kwargs
+   	2. If the input score is >100 for any subject you must raise exception since max allowed score is 100 ONLY
+   	3. If the input score is non-integer, you must raise exception since scores can be in integers ONLY
    ----------------------------
-       Total       Grade
-       ------      ------
-        400         A+
-        350-400     A
-        300-350     B+
-        250-300     B
-        200-250     C
-        150-200     E
-        <150        F
-**kwargs :
-    - The **kwargs arguments are passed as a dictionary and these arguments like key and value
-    - We can pass a variable number of arguments to a function using special **kwargs        
-    :param **Subject_marks: a **kwargs given by the User.keys as subjects and values as marks.    
-    :return: return the Grade obtained by their marks.
-    Solution Steps:
-    **************
-    Take subject_marks as **kwargs.
-    Iterate the Subject_marks and calculate the Total marks Obtained by the students.
-    Check Max allowed score is 100 Only
-    Check scores can be in integers Only
-    Checking the categories by the there total marks.
-    Finally return the Grade obtained by the student.        
+
+	   Total       Grade
+	   ------      ------
+	    400         A+
+	    350-400		 A
+	    300-350     B+
+	    250-300     B
+	    200-250     C
+	    150-200  	 E
+	    <150        F
+
+	Example :
+		result=func_exec(maths=100,physics=100,chemistry=100,cse=100)
+		print(result)
+		Expected Output : "A+"
+
+	Example :
+		result=func_exec(maths=100,physics=80,chemistry=100,cse=90)
+		print(result)
+		Expected Output : "A"
+
+	Example :
+		result=func_exec(maths=100,physics=50,chemistry=100,cse=90)
+		print(result)
+		Expected Output : "B+"
+
+	Example :
+		result=func_exec(maths=50,physics=50,chemistry=50,cse=50)
+		print(result)
+		Expected Output : "C"
+
+	Example :
+		result=func_exec(maths=50,physics=50,chemistry=50,cse=500)
+		print(result)
+		Expected Output : Raise Exception since cse score is 500, max allowed per subject is 100 ONLY
+
+	Example :
+		result=func_exec(maths=50,physics=50,chemistry=50,cse="100")
+		print(result)
+		Expected Output : Raise Exception since cse score is a string "100", scores can be integers ONLY
 '''
 #define Function with **kwargs
 def check(**Subject_marks):
@@ -68,6 +87,6 @@ def check(**Subject_marks):
     elif(sum<150):
         return('F')  
 
-#Calling function
+
 result=check(maths=100,physics=100,chemistry=100,cse=100)
 print(result)
