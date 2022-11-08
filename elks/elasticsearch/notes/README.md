@@ -26,7 +26,7 @@ SECTION 2:
         - 9200 is default port number for Elasticsearch
         - Now we can access Elasticsearch UI using localhost:9200 or vmip:9200
 
-section 3:
+SECTION 3:
 ---------
     # Deploying Elasticsearch using Kubernetes
         - First create the name space for elasticsearch
@@ -72,7 +72,13 @@ section 3:
 
 
             - To run the deployment
-                kubectl create -f deploy.yml -n <elastic>    
+                kubectl create -f deploy.yml -n <elastic>  
+
+             - Check the deployment by using below command
+                kubectl get deployments -n <namespece> 
+
+            - Check the pods by using below command   
+                kubectl get pods -n <namespece>   
 
         2. Service spec
             - Create service yml file for elasticsearch
@@ -94,7 +100,13 @@ section 3:
               targetPort: 9200                
 
             - To run the service
-                kubectl create -f serv.yml -n <elastic>                
+                kubectl create -f serv.yml -n <elastic> 
+
+            - Check the svc by using below command
+                kubectl get deployments -n <namespece> 
+
+            - Check the pods by using below command   
+                kubectl get pods -n <namespece>                    
 
         3. kubectl commands for debug 
 
@@ -108,7 +120,7 @@ section 3:
 
             - Edit Service by using below command
                 kubectl edit  svc <svc-name> -n <namespace-name>
-section 4:
+SECTION 4:
 --------        
     # Deploying Elasticsearch using HELM
 
@@ -118,7 +130,7 @@ section 4:
 
         3.HELM commands for debug
 
-section 5:
+SECTION 5:
 ----------
 
     # Verification post installation
@@ -135,10 +147,6 @@ section 5:
             - CREATE --> Create an index
                 -  By using the PUT request to create a new index
 
-            - DELETE --> Delete an index
-                - Once you have the index you wish to remove from Elasticsearch, use the DELETE request followed by the index name.
-                     DELETE /index_name
-
             - UPDATE --> Update an index an index
                 - Elasticsearch documents are immutable.
                 - When you update an existing document a new document is created with an incremented_version the old document is marked for deletion
@@ -148,28 +156,16 @@ section 5:
                         "title": "elasticsearch"     # Update the elasticsearch
                     }
                     } 
+             
+            - DELETE --> Delete an index
+                - Once you have the index you wish to remove from Elasticsearch, use the DELETE request followed by the index name.
+                     DELETE /index_name
+SECTION 6:
+--------
+     # Elasticsearch UI Access
+        - http://10.74.190.111:9200
 
-        3.kubectl commands for Elasticsearch
-            - Get an overview of the current Elasticsearch clusters in the Kubernetes cluster, including health, version and number of nodes.
-                kubectl get elasticsearch
-
-            - To run the service
-                kubectl create -f serv.yml -n <elastic>
-
-            - To run the deployment
-                kubectl create -f deploy.yml -n <elastic> 
-            
-            - To describe pod
-                kubectl describe  pod <pod-name> -n <namespace-name>
-   
-section 6:
----------
-
-    # Elasticsearch UI Access
-
-        1.UI Link
-
-section 7:
+SECTION 7:
 ----------
 
     # REST API Commands for all CRUD
@@ -201,7 +197,7 @@ section 7:
 
     - Delete in our index by using below command
         curl -XDELETE "http://10.74.190.111:9200/emp_data"  
-section 8:
+SECTION 8:
 ---------
     # References 
         - https://linuxhint.com/elasticsearch-create-index/  
