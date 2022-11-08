@@ -41,34 +41,34 @@ section 3:
             - Create the deployment yml file for elasticsearch
                 vi deploy.yml
 
- apiVersion: apps/v1
- kind: Deployment
- metadata:
-   namespace: elk
-   name: elasticsearch
- spec:
-   selector:
-     matchLabels:
-       component: elasticsearch
-   template:
-     metadata:
-       labels:
-         component: elasticsearch
-     spec:
-       containers:
-         name: elasticsearch
-         image: docker.elastic.co/elasticsearch/elasticsearch:7.17.7
-         ports:
-          containerPort: 9200
-          name: http
-          protocol: TCP
-         resources:
-          limits:
-            cpu: 100m
-            memory: 1Gi
-          requests:
-            cpu: 100m
-            memory: 1Gi
+             apiVersion: apps/v1
+             kind: Deployment
+             metadata:
+              namespace: elk
+              name: elasticsearch
+             spec:
+              selector:
+               matchLabels:
+                component: elasticsearch
+              template:
+                metadata:
+             labels:
+               component: elasticsearch
+             spec:
+             containers:
+                name: elasticsearch
+                image: docker.elastic.co/elasticsearch/elasticsearch:7.17.7
+             ports:
+              containerPort: 9200
+              name: http
+              protocol: TCP
+              resources:
+             limits:
+              cpu: 100m
+              memory: 1Gi
+             requests:
+              cpu: 100m
+              memory: 1Gi
 
 
             - To run the deployment
@@ -78,20 +78,20 @@ section 3:
             - Create service yml file for elasticsearch
                 vi serv.yml
 
- apiVersion: v1
- kind: Service
- metadata:
-   namespace: elk
-   name: elasticsearch
-   labels:
-    service: elasticsearch
- spec:
-   type: NodePort
-   selector:
-    component: elasticsearch
-   ports:
-    port: 9200
-    targetPort: 9200                
+             apiVersion: v1
+             kind: Service
+             metadata:
+              namespace: elk
+              name: elasticsearch
+              labels:
+               service: elasticsearch
+             spec:
+              type: NodePort
+             selector:
+              component: elasticsearch
+             ports:
+              port: 9200
+              targetPort: 9200                
 
             - To run the service
                 kubectl create -f serv.yml -n <elastic>                
