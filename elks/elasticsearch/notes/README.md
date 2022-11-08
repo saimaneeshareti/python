@@ -74,7 +74,7 @@ SECTION 3:
             - To run the deployment
                 kubectl create -f deploy.yml -n <elastic>  
 
-             - Check the deployment by using below command
+            - Check the deployment by using below command
                 kubectl get deployments -n <namespece> 
 
             - Check the pods by using below command   
