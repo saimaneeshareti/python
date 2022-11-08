@@ -200,7 +200,7 @@ section 7:
         }' 
 
     - Delete in our index by using below command
-        curl -XDELETE "http://10.74.290.111:9200/emp_data"  
+        curl -XDELETE "http://10.74.190.111:9200/emp_data"  
 section 8:
 ---------
     # References 
