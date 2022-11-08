@@ -69,7 +69,7 @@ def check_hike(**appr):
   elif (rate>=80 and rate<90):
     return 'hike:{},new_salary:{}'.format(rate,salary+(salary*17/100))  
   elif (rate>=70 and rate<80):
-    return 'hike:{},new_salary:{}'.format(rate,salary+(salary*12/100))
+    return 'hike:{},new_salary:{}'.format(rate,salary+(salary*12/100)) 
   elif (rate>=60 and rate<70):
     return 'hike:{},new_salary:{}'.format(rate,salary+(salary*8/100))
   elif (rate>=50 and rate<60):
