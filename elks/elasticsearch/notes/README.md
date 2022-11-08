@@ -133,25 +133,25 @@ section 5:
                 - Elasticsearch => Indices => Types => JSON Documents with Properties
 
             - CREATE --> Create an index
-                - Using the PUT request to create an index, you can pass various arguments that define the settings for the index you want to have created.
-{
+                -  By using the PUT request to create a new index
+
             - DELETE --> Delete an index
                 - Once you have the index you wish to remove from Elasticsearch, use the DELETE request followed by the index name.
-                    - DELETE /<index_name>
+                     DELETE /index_name
 
             - UPDATE --> Update an index an index
                 - Elasticsearch documents are immutable.
                 - When you update an existing document a new document is created with an incremented_version the old document is marked for deletion
 
-                {
+                    {
                     "doc": {
                         "title": "elasticsearch"     # Update the elasticsearch
                     }
-                } 
+                    } 
 
         3.kubectl commands for Elasticsearch
             - Get an overview of the current Elasticsearch clusters in the Kubernetes cluster, including health, version and number of nodes.
-                - kubectl get elasticsearch
+                kubectl get elasticsearch
 
             - To run the service
                 kubectl create -f serv.yml -n <elastic>
