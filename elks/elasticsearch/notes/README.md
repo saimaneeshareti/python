@@ -173,10 +173,38 @@ section 7:
 ----------
 
     # REST API Commands for all CRUD
-        - Hello
+        - Create an Index in elasticsearch by using below command
+        curl -XPUT "http://10.74.190.111:9200/emp_data" 
+
+    - To verify Index created or not by using below command
+        curl -XGET "http://10.74.190.111:9200/emp_data" 
+
+    - Insert our date into our index by using below command
+        curl -XPOST "http://10.74.190.111:9200/emp_data/_doc/1" -H 'Content-Type: application/json' -d' 
+        {
+        "Student_name": "Maneesh",
+        "subects": "Maths","physics",
+        "Age": 19,
+        "Gender": "male",
+        "Address": "Hyderabad"
+        }'  
+
+    - Update data in to our index by using below command
+        curl -XPOST "http://10.74.190.111:9200/emp_data/_doc/1" -H 'Content-Type: application/json' -d'
+        {
+        "student_name": "Maneesh",
+        "subjects": "Maths","Physics","chemistry"     # Update subjects
+        "Age": 19,
+        "Gender": "male",
+        "Address": "Hyderabad"
+        }' 
+
+    - Delete in our index by using below command
+        curl -XDELETE "http://10.74.290.111:9200/emp_data"  
 section 8:
 ---------
     # References 
         - https://linuxhint.com/elasticsearch-create-index/  
-        - https://www.youtube.com/watch?v=Uo_Avtu_aY4                             
+        - https://www.youtube.com/watch?v=Uo_Avtu_aY4 
+        - https://dev.to/elastic/performing-crud-operations-with-elasticsearch-kibana-50ka                            
                
