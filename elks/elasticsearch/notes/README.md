@@ -136,6 +136,9 @@ SECTION 5:
     # Verification post installation
 
         1.Access Elasticsearch in UI
+            - we can access Elasticsearch in two ways
+                - By using VMIP:ContainerPortNo (9200)
+                - By using VMIP:NodePortNo
 
         2.CREATE/DELETE/UPDATE Indexes
 
@@ -160,6 +163,17 @@ SECTION 5:
             - DELETE --> Delete an index
                 - Once you have the index you wish to remove from Elasticsearch, use the DELETE request followed by the index name.
                      DELETE /index_name
+
+        3. kubectl commands for Elasticsearch
+
+            - Using below command we can see pod is available or not in required namespace
+                kubectl get pod <pod-name> -n <namespace-name>
+
+            - Using below command we can see service is available or not in required namespace
+                kubectl get svc <svc-name> -n <namespace-name>  
+       
+          - Using below command we can see deployment is available or not in required namespace
+                kubectl get deployment <deployment-name> -n <namespace-name>              
 SECTION 6:
 --------
      # Elasticsearch UI Access
@@ -197,6 +211,60 @@ SECTION 7:
 
     - Delete in our index by using below command
         curl -XDELETE "http://10.74.190.111:9200/emp_data"  
+
+    - Bulk API for Multiple Document Indexing and Modification
+        - Create bulk indexes:
+            curl -XPOST "http://10.74.190.111:9200/_bulk" -H 'Content-Type: application/json' -d' 
+            {"create" : {"_index":"std_data", "_id":"1"}}
+            {"name":"Ram", "std_id":"867", "dob":"2003","branch":"MPC", "address":"hyderabad", "age":"18"}
+            {"create" : {"_index":"std_data", "_id":"2"}}
+            {"name":"krishna", "std_id":"094", "dob":"2002","branch":"Bipc", "address":"hyderabad", "age":"17"}
+            {"create" : {"_index":"std_data", "_id":"3"}}
+            {"name":"Venkat", "std_id":"894", "dob":"1999","branch":"mechnical", "address":"guntur", "age":"22"}
+            {"create" : {"_index":"std_data", "_id":"4"}}
+            {"name":"Zenith", "std_id":"632", "dob":"1998","branch":"mechnical", "address":"chennai", "age":"21"}
+            {"create" : {"_index":"std_data", "_id":"5"}}
+            {"name":"Bharath", "std_id":"326", "dob":"1999","branch":"civil", "address":"chitoor", "age":"22"}
+            {"create" : {"_index":"std_data", "_id":"6"}}
+            {"name":"Kiran", "std_id":"789", "dob":"1997","branch":"cse", "address":"nellore", "age":"22"}
+
+        - Update bulk indexes:
+            curl -XPOST "http://10.74.190.111:9200/_bulk" -H 'Content-Type: application/json' -d' 
+            {"update" : {"_index":"std_data", "_id":"3"}}
+            {"doc": {"branch":"civil"}}
+            {"update" : {"_index":"std_data", "_id":"5"}}
+            {"doc": {"address":"nellore"}}
+            {"update" : {"_index":"std_data", "_id":"6"}}
+            {"doc": {"branch":"electronics"}}
+            {"update" : {"_index":"std_data", "_id":"4"}}
+            {"doc": {"age":"23"}}
+            {"update" : {"_index":"std_data", "_id":"2"}}
+            {"doc": {"dob":"2003"}}   
+
+        - Delete bulk indexes:   
+            curl -XPOST "http://10.74.190.111:9200/_bulk" -H 'Content-Type: application/json' -d'
+            {"delete" : {"_index":"std_data", "_id":"1"}}
+            {"delete" : {"_index":"std_data", "_id":"4"}}
+            {"delete" : {"_index":"std_data", "_id":"6"}}
+            {"delete" : {"_index":"std_data", "_id":"3"}}
+            {"delete" : {"_index":"std_data", "_id":"2"}}
+            {"delete" : {"_index":"std_data", "_id":"5"}}    
+
+        - Search bulk indexes:
+            curl -XGET "http://10.74.190.111:9200/_bulk" -H 'Content-Type: application/json' -d'
+            {
+                "query": {
+                    "match_all": {}
+            }
+            }
+
+    Performs multiple Indexing, Updating, Deleting operations in a single API call:
+        curl -XPOST "http://10.74.190.111:9200/_bulk" -H 'Content-Type: application/json' -d'
+        {"create":{"_index":"std_data", "_id":"6"}}
+        {"name":"uday","branch":"civil"}
+        {"delete":{"_index":"student", "_id":"3"}}
+        {"update":{"_index":"std_data","_id":"4"}}
+        {"name":"charan,"branch":"cse"}                          
 SECTION 8:
 ---------
     # References 
