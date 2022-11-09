@@ -41,6 +41,47 @@ SECTION 3:
             - Create the deployment yml file for elasticsearch
                 vi deploy.yml
 
+            - To run the deployment
+                kubectl create -f deploy.yml -n <elastic>  
+
+            - Check the deployment by using below command
+                kubectl get deployments -n <namespece> 
+
+            - Check the pods by using below command   
+                kubectl get pods -n <namespece>   
+
+        2. Service spec
+            - Create service yml file for elasticsearch
+                vi serv.yml
+
+            - To run the service
+                kubectl create -f serv.yml -n <elastic> 
+
+            - Check the svc by using below command
+                kubectl get deployments -n <namespece> 
+
+            - Check the pods by using below command   
+                kubectl get pods -n <namespece>   
+
+            - elasticsearch UI Access using localhost:port or VM_IP:9200
+                     
+        3. kubectl commands for debug 
+
+             kubectl describe  pod <pod-name> -n <namespace-name>
+
+            - Edit pod by using below command
+                kubectl edit  pod <pod-name> -n <namespace-name>
+
+            - Describe the service by using below command
+                kubectl describe  svc <svc-name> -n <namespace-name>  
+
+            - Edit Service by using below command
+                kubectl edit  svc <svc-name> -n <namespace-name>
+
+SECTION 4:
+----------
+    # Elasticsearch Deployment spec
+
              apiVersion: apps/v1
              kind: Deployment
              metadata:
@@ -69,21 +110,9 @@ SECTION 3:
              requests:
               cpu: 100m
               memory: 1Gi
-
-
-            - To run the deployment
-                kubectl create -f deploy.yml -n <elastic>  
-
-            - Check the deployment by using below command
-                kubectl get deployments -n <namespece> 
-
-            - Check the pods by using below command   
-                kubectl get pods -n <namespece>   
-
-        2. Service spec
-            - Create service yml file for elasticsearch
-                vi serv.yml
-
+SECTION 5:
+----------
+    # Elasticsearch Service spec
              apiVersion: v1
              kind: Service
              metadata:
@@ -97,42 +126,9 @@ SECTION 3:
               component: elasticsearch
              ports:
               port: 9200
-              targetPort: 9200                
-
-            - To run the service
-                kubectl create -f serv.yml -n <elastic> 
-
-            - Check the svc by using below command
-                kubectl get deployments -n <namespece> 
-
-            - Check the pods by using below command   
-                kubectl get pods -n <namespece>                    
-
-        3. kubectl commands for debug 
-
-             kubectl describe  pod <pod-name> -n <namespace-name>
-
-            - Edit pod by using below command
-                kubectl edit  pod <pod-name> -n <namespace-name>
-
-            - Describe the service by using below command
-                kubectl describe  svc <svc-name> -n <namespace-name>  
-
-            - Edit Service by using below command
-                kubectl edit  svc <svc-name> -n <namespace-name>
-SECTION 4:
---------        
-    # Deploying Elasticsearch using HELM
-
-        1.HELM Charts
-
-        2.HELM commands for bring-up
-
-        3.HELM commands for debug
-
-SECTION 5:
+              targetPort: 9200
+SECTION 6:
 ----------
-
     # Verification post installation
 
         1.Access Elasticsearch in UI
@@ -174,12 +170,12 @@ SECTION 5:
        
           - Using below command we can see deployment is available or not in required namespace
                 kubectl get deployment <deployment-name> -n <namespace-name>              
-SECTION 6:
---------
+SECTION 7:
+---------
      # Elasticsearch UI Access
         - http://10.74.190.111:9200
 
-SECTION 7:
+SECTION 8:
 ----------
 
     # REST API Commands for all CRUD
@@ -265,8 +261,8 @@ SECTION 7:
         {"delete":{"_index":"student", "_id":"3"}}
         {"update":{"_index":"std_data","_id":"4"}}
         {"name":"charan,"branch":"cse"}                          
-SECTION 8:
----------
+SECTION 9:
+----------
     # References 
         - https://linuxhint.com/elasticsearch-create-index/  
         - https://www.youtube.com/watch?v=Uo_Avtu_aY4 
