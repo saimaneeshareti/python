@@ -1,0 +1,576 @@
+# What is a python array?
+. Arrays are used to store multiple values in one single variable.
+. Arrays are mutable which means they are changeable so, incase you want to add or remove element from it you can do so eaisly.
+
+# Difference between List and Array?
+. Arrays and list have the same way of storing data. 
+. Array can store single data type value but list can store any data type value
+
+For Example:
+***********
+. If i have an array of integer value all values presenting that array will be integer and nothing els.
+. In list it can store float,integer,string,etc
+
+# Types of Array
+. One Dimensional Array -> single row and multiple columns
+. Multi Dimensional Array -> multiple row and multiple columns
+
+# How to create arrays in python?
+. Arrays in python can be created after importing the array module.
+1. Without alias -> import array
+2. Using alias -> import array as array
+3. Using* -> from array import*
+
+- Below example i'm using from array import*
+
+from array import*
+arr1=array('i', [3,7,8,9,0,4])
+print(arr1)
+
+out put
+array('i',[3,7,8,9,0,4])
+
+i -> can stored signed digit
+I -> only stored unsigned digit
+
+from array import*
+arr1=array('i', [3,7,-8,-9,0,4])
+arr1.reverse()
+print(arr1)
+
+out put
+array('i',[4,0,-9,-8,7,3])
+
+# Basic Array operations:
+*************************
+1. Finding the length of an array
+2. Adding/changing element of an array
+3. Removing/Delting element of an array
+4. Array concatenation
+5. Slicing
+6. Looping through an array 
+
+1. Finding the length of an array:
+***********************************
+. Length of an array is the number of element that are actually present in an array.
+. You can use len() function to achive this.
+. The len() function return an integer value that is equal to the number of element present in that array.
+
+from array import*
+arr1=array('i', [3,7,8,9,0,4])
+print(len(arr1))
+
+out put
+6
+
+2. Adding/changing element of an array:
+***************************************
+- functions used to add elements to an array
+1. append() -> used when you want to add a single element at the end of an array.
+2. extend() -> used when you want to add more than one element at the end of an array.
+3. insert() -> used when you want to add an element at a specific position in an array.
+
+from array import*
+a=array('i', [3,7,8,9,0,4])
+a.append(9)
+print(a)
+
+out put
+array('i',[3,7,8,9,0,4,9])
+
+from array import*
+b=array('i', [3,7,8,9,0,4])
+b.append([6,7,3])
+print(b)
+
+out put
+array('i',[3,7,8,9,0,4,9,6,7,3])
+
+from array import*
+c=array('i', [3,7,8,9,0,4])
+c.append(2,5)
+print(c)
+
+out put
+array('i',[3,7,5,9,0,4,9])
+
+3. Removing/Delting element of an array:
+****************************************
+- functions used to remove elements of an array
+1. pop() -> used when you want to remove an element and return it.
+2. remove() -> used when you want to remove an element with a specific value Without returning it.
+
+from array import*
+a=array('i', [3,7,8,9,0,4])
+a.pop(0)
+print(a)
+
+out put
+array('i',[7,8,9,0,4,9])
+
+from array import*
+a=array('i', [3,7,8,9,0,4])
+a.remove(9)
+print(a)
+
+out put
+array('i',[3,7,8,0,4,9])
+
+4. Array concatenation:
+***********************
+. Concatenation means joining , for incase you want to join different arrays you can make use + symbol
+. It can not concatenat two arrays of different data type.
+
+from array import*
+a=array('i', [3,7,8,9,0,4])
+b=array('i',[5,4,7,8])
+c=array('i')
+c=a+b 
+print("Array c=" ,c)
+
+out put
+array('i',[3,7,8,9,0,4,5,4,7,8])
+
+5. Slicing an Array:
+********************
+. It means searching some particular values from your array.
+. Sliced using the : symbol 
+. print(a[0:3]) -> 0 specific where searching is start and 3 specific where it has to stop 
+. So it will start from 0 it will go on to 3 but it will not include the value which is present at 3
+
+from array import*
+a=array('i', [3,7,8,9,0,4])
+print(a[0:5])
+
+out put
+array('i',[3,7,8,9,0])
+
+6. Looping through an array:
+****************************
+- we can loop through an array easily using for and while loops.
+. for -> iterates over the time of an array specified numer of times.
+. while -> iterates over the elements until a certain condition is met.
+
+from array import*
+
+arr1=array('i', [3,7,8,9,0,4])
+for i in range(6):
+    print(arr1)
+
+out put
+array('i',[3,7,8,9,0,4])
+array('i',[3,7,8,9,0,4])
+array('i',[3,7,8,9,0,4])
+array('i',[3,7,8,9,0,4])
+array('i',[3,7,8,9,0,4])
+array('i',[3,7,8,9,0,4])
+
+from array import*
+
+arr1=array('i', [3,7,8,9,0,4])
+for i in range(6):
+    print(arr1[i])
+
+out put 
+3
+7
+8
+9
+0
+4   
+
+========================================================================================================================================================================
+
+# What is a python dictionary?
+. Dictionaries are used to store data values in key:value pairs.
+. Dictionary items are presented in key:value pairs, and can be referred to by using the key name.
+. Dictionary items are ordered, changeable, and does not allow duplicates.
+
+dict1= {
+  "brand": "Ford",
+  "model": "Mustang",
+  "year": 1964
+}
+print(dict1)
+
+output:
+{'brand': 'Ford', 'model': 'Mustang', 'year': 1964}
+
+# Update dictionary:
+**********************
+. we can update the value but can't update the key
+
+dict1= {
+  "brand": "Ford",
+  "model": "Mustang",
+  "year": 1964
+}
+dict1["year"]=1970
+print(dict1)
+
+output:
+{'brand': 'Ford', 'model': 'Mustang', 'year': 1970}
+
+dict1= {
+  "brand": "Ford",
+  "model": "Mustang",
+  "year": 1964
+}
+dict1.update({"colour":"red"})
+print(dict1)
+
+output:
+{'brand': 'Ford', 'model': 'Mustang', 'year': 1970 , 'colour':'red'}
+
+# Delete dictionary:
+********************
+- del dict1
+  print(dict1)
+
+. To delete the entair variable
+
+# Find the length of dictionary:
+******************************
+
+dict1= {
+  "brand": "Ford",
+  "model": "Mustang",
+  "year": 1964
+}
+print(len(dict1))
+
+output:
+3
+
+. It can check how many items in dictionary
+
+# To print only keys and values:
+*********************************
+
+dict1= {
+  "brand": "Ford",
+  "model": "Mustang",
+  "year": 1964
+}
+print(dict1.keys())
+
+output:
+dict_keys(['brand','model','year'])
+
+dict1= {
+  "brand": "Ford",
+  "model": "Mustang",
+  "year": 1964
+}
+print(dict1.values())
+
+output:
+dict_values(['ford','mustang','1964'])
+
+# Clear dictionary:
+********************
+
+- dict1.clear()
+  print(dict1)
+{}
+
+. To clear only values in the variable 
+
+# Copy dictionary:
+********************
+dict1= {
+  "brand": "Ford",
+  "model": "Mustang",
+  "year": 1964
+}
+dict2=dic1.copy()
+print(dict2)
+
+output:
+{'brand':'Ford','model':'Mustang','year': 1964 }
+
+# Iterate the dictionary:
+**************************
+employee={
+  "name":"Maneesh",
+  "id":4,
+  "dob":"11/12/1996",
+  "address":"Hyd"
+}
+for key in employee:
+  print('key=',key)
+  print('value=',employee[key])
+
+output:
+key= name
+value= Maneesh
+key= id
+value= 4
+key= dob
+value= 11/12/1996
+key= address
+value= Hyd
+
+employee={
+  "name":"Maneesh",
+  "id":4,
+  "dob":"11/12/1996",
+  "address":"Hyd"
+}
+for item in employee.items():
+  print(item)
+
+output:
+('name', 'Maneesh')
+('id', 4)
+('dob', '11/12/1996')
+('address', 'Hyd')
+
+employee={
+  "name":"Maneesh",
+  "id":4,
+  "dob":"11/12/1996",
+  "address":"Hyd"
+}
+for key in employee.__iter__():
+  print('key=',key)
+  print('value=',employee[key])
+
+output:
+key= name
+value= Maneesh
+key= id
+value= 4
+key= dob
+value= 11/12/1996
+key= address
+value= Hyd  
+========================================================================================================================================================================
+# What is a python list?
+. Lists are used to store multiple items in a single variable.
+. Lists are created using square brackets
+. List items are indexed, the first item has index [0], the second item has index [1] etc.
+. If you add new items to a list, the new items will be placed at the end of the list.
+
+data1=[1.5,'Ram',2]
+print(data1)
+
+output:
+[1.5,'Ram',2]
+
+data2=[4.8,23,'hyderabad']
+print(data2)
+
+output:
+[1.5,'king',2]
+[4.8,23,'hyderabad']
+
+print(data1+data2)
+
+output:
+[1.5,'king',2,4.8,23,'hyderabad']
+
+# how to use replication:
+************************
+- same out comes morethan one time we use replica
+- use * symbol
+
+data1=[1.5,'Ram',2]
+print(data1*3)
+
+output:
+[1.5,'Ram',2,1.5,'Ram',2,1.5,'Ram',2]
+
+# Slicing an list:
+******************
+. It means searching some particular values from your array.
+. Sliced using the : symbol 
+. print(a[0:3]) -> 0 specific where searching is start and 3 specific where it has to stop 
+. So it will start from 0 it will go on to 3 but it will not include the value which is present at 3
+
+data1=[1.5,'Ram',2,5.6,7,'rahul']
+print(data1[1:4])
+
+output:
+['Ram',2,5.6]
+
+data1=[1.5,'Ram',2,5.6,7,'rahul']
+print(data1[1:])
+
+output:
+['Ram',2,5.6,7,'rahul']
+
+# Update an list:
+*****************
+data1=[1.5,'Ram',2,5.6,7,'rahul']
+data1[3]='nellore'
+print(data1)
+
+output:
+[1.5,'Ram',2,'nellore,7,'rahul']
+
+data1=[1.5,'Ram',2,5.6,7,'rahul']
+data1.append('hyderadad')
+print(data1)
+
+output:
+[1.5,'Ram',2,5.6,7,'rahul','hyderabad']
+
+# Delete an list:
+*****************
+data1=[1.5,'Ram',2,5.6,7,'rahul']
+del data1[3]
+print(data1)
+
+output:
+*******
+[1.5,'Ram',2,7,'rahul','hyderabad']
+
+# how to find a min and max value in a list:
+********************************************
+list1=[29,67,34,888,923,9,67,334,11]
+print(min(list1))
+
+output:
+9
+
+print(max(list1))
+923
+
+# Find the length of a list:
+****************************
+list1=[29,67,34,888,923,9,67,334,11]
+print(len(list1))
+
+output:
+9
+
+# Find the repeated number in a list:
+*************************************
+list=[5,77,43,65,34,5,78,90,5]
+print(list1.count(5))
+
+output:
+3
+
+# Insert a number:
+******************
+list=[5,77,43,65,34,5,78,90,5]
+list1.insert(3,100)
+print(list1)
+
+output:
+[5,77,43,100,65,34,5,78,90,5]
+
+# Iterate the list:
+*******************
+letters=[45,80,90,50,60,'maneesh',8.9]
+for letter in letters:
+  print(letter)
+
+output:
+45
+80
+90
+50
+60
+maneesh
+8.9
+
+# What is a Python function?
+****************************
+. A function is a block of code which only runs when it is called.
+. You can pass data, known as parameters, into a function.
+. A function can return data as a result.
+
+def functionname():
+  print("this is function")
+
+functionname()
+
+output:
+this is function
+------------------------------------
+def functionname(name):
+  print("this is function",name)
+
+functionname('maneesh')
+
+output:
+this is function maneesh
+---------------------------------------
+multiple parameter
+
+def functionname(name,age,id):
+  print("this is function",name,age,id)
+
+functionname('maneesh',24,4)
+
+output:
+this is function maneesh 24 4
+----------------------------------------------
+def functionname(a):
+  for i in a:
+    print(i)
+
+functionname([1,2,3,4,5,'maneesh',2.6])
+
+output:
+1
+2
+3
+4
+5
+maneesh
+2.6
+------------------------------------------------
+- Arbitrary parameter:
+**********************
+def functionname(*a):
+  print(a)
+
+functionname(1,2,3,4,5)
+
+output:
+(1, 2, 3, 4, 5)
+------------------------------------------------
+- Key word parameter:
+*********************
+def functionname(**a):
+  print(a)
+
+functionname(name='maneesh',age=24,place='hyd')
+
+output:
+{'name': 'maneesh', 'age': 24, 'place': 'hyd'}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

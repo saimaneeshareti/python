@@ -1,0 +1,189 @@
+# AIM: To explore and understand the usage of kubernetes services.
+
+# SECTION 1: 
+# What is K8s service and why we use it?
+. In a kubernetes cluster each Pod gets its own internal ip address but the Pods in k8s are destroyed constantly.
+. When the Pod restart or when old one dies and the new one gets started in its place it gets a new ip address.But these ips are not static.
+. We cannot rely on these ips for internal communication.
+. So we need something that is consistent communication between outside or inside the cluster might be able it persistently.
+
+- k8s service :
+****************
+. Service is a way of grouping the pods that are running on a cluster.
+. Services are cheap and you can have as many services as possible with in your cluster.
+. Services are provided some of the important features
+. That are standardized across the cluster such as load balancing and service discover between apps.
+
+- Uses of k8s services :
+*************************
+. Kubernetes services that acts as an endpoint for enabling the communication between various components within and outside the application
+
+- Three types of services are availabe in kubernetes:
+1.Cluster IP
+2.Node-Port
+3.Loadbalancer
+
+# SECTION 2: 
+# What is Node-port K8s service and why we use it?
+- Node-Port in k8s service:
+**************************
+. Node-Port is the port on the node where pod is running.We use this port along with node ip to access the app from your browser.
+. Here we have 2-things 
+  1.Node IP
+  2.Node Port
+. If we are defining the node port manually in the mainfest file
+. Then make sure you define the node port in the range of 30000 to 32767
+. Any number you can define outside of this range can not be node port.
+. In case if you don't menction node port specifically in manifest file the k8s will assign unuse nodeport with in that range dynamically.  
+
+- Uses of Node-Port:
+*********************
+. It is an open port on every node of your cluster. Kubernetes transparently routes incoming traffic on the NodePort to your service, even if your application is running on a different node.
+
+# SECTION 3: 
+# What is Load-balancer K8s service and why we use it?
+- Load-balancer in K8s service:
+********************************
+. A load balancer service acts as a traffic controller routing client requests to the nodes capable of serving them quickly and efficiently.
+. When one host goes down the load balancer redistributes its workload among the remaining nodes.
+. On the other hand when a new node joins a cluster the service automatically starts sending requests to PODs attached to it.
+
+- In Kubernetes clusters, a Load Balancer service performs the following tasks:
+. Distributing network loads and service requests efficiently across multiple instances
+. Enabling autoscaling in response to demand changes
+. Ensuring High Availability by sending workloads to healthy PODs
+
+- Uses of Load-balancer:
+*************************
+.  Load balancer service that distribute incoming traffic across a pool of hosts to ensure optimum workloads and high availability.  
+
+- Two types of Load Balancers Available in Kubernetes:
+*******************************************************
+1.Internal Load Balancer
+2.External Load Balancer
+
+# SECTION 4: 
+# What are the differences between Load-balancer & Node-port services?
+. The difference i understand is that LoadBalancer does not support UDP but apart from that whenever we create a service either Nodeport or Loadbalancer we get a service IP and port, a NodePort, and endpoints.
+
+NodePort: on top of having a cluster-internal IP expose the service on a port on each node of the cluster (the same port on each node). You'll be able to contact the service on any NodeIP:NodePort address.
+
+LoadBalancer: on top of having a cluster internal IP and expose the service on a NodePort also  ask the cloud provider for a load balancer which forwards to the Service exposed as a NodeIP:NodePort for each Node.
+
+# SECTION 5:
+# How to expose the k8s POD using k8s Node-port service?
+. Node port expose is an app to outside world on the internet, so we access that app on the internet we need node ip and nodeport
+. There we have two more ips and ports beside node ip and nodeport
+ 1.Port
+ 2.Target port
+. It is the port on the service itself 
+. Target port these is port on actually pod were your app is running  
+. Both port and target port have the same number
+
+# SECTION 6: 
+# How to expose the k8s POD using k8s Load-balancer service?
+. Load balancer service created in various Cloud providers like AWS, GCP, Azure, etc. To expose our application to the Internet.The Cloud provider will provide a mechanism for routing the traffic to the services. 
+. If your set-up on any of the above cloud once you create a service type load balancer.It will automatically created load balancer on backend and generate public ip once that is done 
+. We use that public ip it will forward all the traffic to your service and you can send HTTP,TCP,UDP all different types of traffic.  
+
+# SECTION 7: 
+# Sample k8s node-port service spec
+. Node-Port spec file contains 4-top sections
+
+apiversion: V1
+kind: service
+metadata:
+   name: service-np
+   labels:
+     app: nginx-app
+spec:
+  selector:
+    app: nginx-app
+  type: NodePort
+  ports:
+   - nodeport: 31000
+     port: 80
+     targetport: 80
+
+# SECTION 8: 
+# Sample k8s Deployment spec
+
+apiversion: apps/V1
+kind: Deployment
+metadata:
+   name: nginx-dep
+   labels: 
+     app: nginx-app
+spec:
+   replicas: 1
+   selector:
+      matchlabels:
+         app: nginx-app
+    template:
+      metadata: 
+         app: nginx-app
+      spe:        
+        container:
+         - name: nginx-container
+           image: nginx 
+           ports:
+           - containerport: 80    
+
+# SECTION 9: 
+# Command to run and create k8s node-port service  
+. Once the deployment is cerated then expose the app to outside world,so we need a service type node port service
+  kubectl create -f <nginx-svc.yml>
+
+. To display the service 
+  kubectl get service -l <app=nginx-app>
+
+. To get the complete details of the service
+  kubectl describe svc <service-np> 
+
+. To delete the service
+  kubectl delete svc <service-np>     
+
+# SECTION 10: 
+# Command to run and create k8s POD that uses node-port service
+. We need to create deploymet by running 
+  kubectl create -f <nginx-dep.yml>
+
+ Once the deployment is cerated then expose the app to outside world,so we need a service type node port service
+  kubectl create -f <nginx-svc.yml>
+
+. To display the service 
+  kubectl get service -l <app=nginx-app>
+
+. We can see which node the pod is schedule
+  kubectl get pod -o wide
+
+. Above commands we have deploy app using deployment then expose the app on internet using nodeport service  
+
+. To get the complete details of the service
+  kubectl describe svc <service-np> 
+
+. To delete the service
+  kubectl delete svc <service-np>  
+
+# SECTION 11: 
+# Commands to run and verify the K8s pods     
+. Deploy the pod in particular namespace
+  kubectl create -f <nginx-pod.yml> -n <namespace>
+
+. Verify the pod is running or not
+  kubectl get pod -n <namespace>
+
+. To know the ip address and which node the pod is schedule
+  kubectl get pod -o wide -n <namespace>
+
+. Get the complete details of the pod
+  kubectl describe pod <nginx-pod>
+
+. TO go inside the pod and excute some commands
+  kubectl exec -it nginx-pod-- /bin/sh
+
+. Delete the pod
+  kubectl delete pod <nginx-pod> -n <namespace>  
+
+
+

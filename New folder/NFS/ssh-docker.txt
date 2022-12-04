@@ -1,0 +1,84 @@
+# Aim :
+  Use SSH to Connect a Docker Container
+
+STEPS:
+  STEP1 : 
+   - Create SSH Key Pair :
+      # Generate the SSH key on the Ubuntu system
+      # Before creating the SSH key, ensure that you don’t already have the SSH key on your ubuntu vm.
+      # Sometimes you already have an SSH key pair on your Ubuntu system.Therefore when you create a new key pair it will be 
+        overwritten on the old one.
+      # To verify that either the SSH key file exists on your client machine or not
+        ls -l ~/.ssh/id.pub 
+
+  STEP2 : 
+   - Generate new SSH key pair :
+      # When we run the above command you will receive an error saying “No such file or directory” then,
+        it means you don’t have an SSH key on your machine.
+      # Generate the SSH key pair on the Ubuntu client machine.
+       ssh-keygen  
+
+      # If you run the above command “ssh-keygen”, it generates a default  key pair. To save the SSH key on the default location.
+      # To check the ssh key pair is successfully generated on the Ubuntu machine.
+        ls ~/.ssh/id
+
+  STEP3 : 
+    - Build the docker image :
+      # Once create the SSH key pair, Next create a new directory name "sshdemo" and create a Dockerfile.
+      # We can now build ubuntu docker image from the Dockerfile with the command
+         docker build -t sshubuntu
+
+      # In docker file i'm using ubuntu as the base image for the container
+      # Above command compiles a new docker image called “sshubuntu” based on the script inside the Dockerfile.
+      # The above command will take some time to complete because we’ve instructed in the Dockerfile to install the openssh-server package and run a few extra commands to set the root password and enable root SSH login.
+      # After install the OpenSSH server, add a new user name "sshuser"
+      # copies the SSH public key file to the authorized_keys file in the container, 
+         starts the SSH service using systemctl
+
+      # The container listens on port 22 which is the default for ssh and finally runs the SSH daemon
+      
+
+  STEP4 : 
+    - Running the Docker container :
+      # Docker image just created name “sshubuntu”.We also map docker port 22 to host port 2022.  
+         docker run -d -p 2022:22 sshubuntu
+
+      # Our docker container is now running host port 2022
+         To verify you can use the docker ps 
+
+  STEP5 :
+   - SSH into the Docker container :
+   # From here, you can initiate an SSH connection into the running container.
+       ssh -i idkey sshuser@localhost -p 2022
+
+   # Above command connects to docker's default IP address but localhost can be different if you explicitly specify the          container's IP address.
+
+  - References: Docker file
+
+  FROM ubuntu:latest
+  RUN apt update && apt install -server sudo -y
+
+  # Create a user “sshuser” and group “sshgroup”
+  RUN groupadd sshgroup && useradd -ms /bin/bash -g sshgroup sshuser
+
+  # Create sshuser directory in home
+  RUN mkdir -p /home/sshuser/.ssh
+
+  # Copy the ssh public key in the authorized_keys file. The idkey.pub below is a public key file you get from ssh-keygen. They are under ~/.ssh directory by default.
+  COPY idkey.pub /home/sshuser/.ssh/authorized_keys
+
+  # change ownership of the key file. 
+  RUN chown sshuser:sshgroup /home/sshuser/.ssh/authorized_keys && chmod 600 /home/sshuser/.ssh/authorized_keys
+
+  # Start SSH service
+  RUN service ssh start
+
+  # Expose docker port 22
+  EXPOSE 22
+
+  CMD ["/usr/sbin/sshd","-D"] 
+     
+  
+
+
+    

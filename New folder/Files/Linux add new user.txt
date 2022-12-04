@@ -1,0 +1,17 @@
+To add new user:
+****************
+sudo useradd --shell /bin/bash -m -d /home/vudeadmin vudeadmin;
+sudo usermod -aG sudo vudeadmin;
+echo 'vudeadmin:vudeadmin' | sudo chpasswd;
+sudo mkdir -p /home/vudeadmin;
+sudo rm -rf /home/vudeadmin/.ssh;
+sudo mkdir /home/vudeadmin/.ssh;
+echo vude | sudo ssh-keygen -C "" -P "" -f /home/vudeadmin/.ssh/id_rsa -q
+echo vude | sudo -S chown -R vudeadmin /home/vudeadmin/.ssh
+
+ssh username@vm ip
+
+
+sudo userdel vudeadmin
+sudo rm -rf /home/vudeadmin/
+

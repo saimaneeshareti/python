@@ -1,0 +1,89 @@
+# Kubernetes Pod :
+. Pod is a smallest object
+. pod is create one or more Containers
+. Inside the pod container is Running
+. Mostly using single pod, single container
+. Single node we can create the multi pods
+. In siple words pod is nothing but replicas
+
+# Kubernetes Deployments :
+. Deployment nothing but configuration about your number of replicas, Name of images,Resources like cpu, ram, storage
+. Deployment is managing of the our pods
+. We will create number of pods to create create a single deployment by using the replica number.
+. Comming to the Deployment yml file we can use api version, kind, metadata, lable, spec, selector
+. Api version -> Based on our resources
+. Kind -> Resourcess type like deployment, service, namespace, etc....
+. Meatadata -> Information about our resourcess
+. Lable -> Matching only thing pod, service, deployment...
+. Spec -> Specification about our pod and also container
+. Selector -> It will match the lable resourcess
+
+# Kubernetes Services :
+
+    - The sevicess way of grouping pods that are running on the cluster.
+
+    - Servicess are cheap and you can have as many servicess as possible within your cluster.
+
+    - Services provide discovery and routing between pods and to support the zero down time app deployment.
+
+    - Servicess types are
+
+    - 1. Cluster IP
+
+    - 2. Nodeport
+
+    - 3. Load Balancer
+
+   
+
+    - Cluster IP :  Exposes a service only accessible within the cluster, It is kubernetes default service.
+
+
+
+    - NodePort : Application expose the out side othe world Users can communicate with the service from
+
+      the outside by requesting <NodeIP>:<NodePort>
+
+
+
+    - Load Balancer : The Kubernetes load balancer sends connections to the first server in the pool until it is
+
+      at capacity, and then sends new connections to the next available server.
+
+
+
+# Kubernetes Service accounts :
+
+    - Service Account use when we need to manage kubernetes resources (pods, nodes, deployments) etc.
+
+      From inside the pod
+
+    - ServiceAccount is used by containers running in a Pod, to communicate with
+
+      the API server of the Kubernetes cluster.  
+
+
+
+    - create the kubernetes service account
+
+        kubectl create service account <<SA-NAME>>
+
+
+
+    - To get the service service account
+
+        kubectl get sa  
+
+
+
+# Kubernetes Ingress :
+
+    - Ingress exposes HTTP and HTTPS routes from outside the cluster to services within the cluster
+
+    - Traffic routing is controlled by rules defined on the Ingress resource.
+
+    - The traffic-routing rules into a single resource and runs as part of a Kubernetes cluster.
+
+    - The Kubernetes Ingress API lets you expose your applications deployed in a Kubernetes cluster to
+
+      the Internet with routing rules into a single source.            

@@ -1,0 +1,319 @@
+AIM : 
+    # CI/CD Automation ~ Using Kubernetes build agents for Jenkins :
+
+PREREQUISITES :
+    1. Kubernetes cluster
+    2. Jenkins Server
+    3. Jenkins Kubernetes plugin
+    4. Jenkins Docker plugin
+
+SECTIONS :
+
+  # SECTION 1 :
+  - Installing Jenkins on Kubernetes
+
+  # STEP 1 :
+  . Create a name space :
+    - First, we need to create the namespace  
+       kubectl create namespace <namespace-name>  
+
+  # STEP 2:
+  . Create the YAML file and its deploy to Jenkins:
+    - Create new file <jenkins.yaml> using vi editor
+    - Add the code to define the Jenkins image, its port, and several more configurations
+    - For the code we can find the Example section
+    - This YAML file creates a deployment using the Jenkins image and also opens port 8080
+    - You use these ports to access to the Jenkins and accept connections.
+    - Now create this deployment in the respective namespace
+       kubectl create -f <jenkins.yaml> -n <namespace>
+    - Use below command to verify the pods state
+       kubectl get pods -n <namespace>
+        
+  # STEP 3 :
+  . Create servive for the jenkins :
+    - you need to expose it using a Service. You will use the NodePort Service type
+    - Create and open a new file called jenkins-service.yaml
+       vi <jenkins-service.yml>
+    - Add the following code to define the NodePort Service,find the code in example section
+    - you define your NodePort Service and then expose port of the Jenkins pod to port
+    - Now create the Service in the same namespace
+       kubectl create -f <jenkins-service.yaml> -n <namespace>
+    - Check that the Service is running or not
+       kubectl get services -n <namespace>
+
+  # STEP 4 :
+  . Accessing the Jenkins UI :
+    - In this step, you will access and explore the Jenkins UI
+    - Our NodePort service is accessible on port across the cluster nodes 
+    - To take the VM exernal IP and nodeport IP
+    - Now open a web browser and navigate to <VM exernal IP>:<port>
+    - A page will appear asking for an administrator password
+
+  # STEP 5 :
+  . Then we need to login pod :
+    - Login the pod pod by using below command
+       kubectl exec -it <podname> -n <namespace> -- bash  
+    - Find the below command for jenkins administrator password
+       cat /var/jenkins_home/secrets/initialAdminPassword
+
+# SECTION 2 :
+  . Declarative Pipeline:
+  - First we need to install pipeline plugin as pipeline plugin
+
+  # STEP 1: 
+  . Pipeline:
+  - All valid Declarative Pipelines must be enclosed within a pipeline block
+    For example:
+    pipeline {
+        
+    }
+  - The top-level of the Pipeline must be a block, specifically: pipeline { }.
+            
+  # STEP 2 : 
+  . Agent:
+  - where you want buil the job is called agent
+  - The agent section specifies where the entire Pipeline, or a specific stage
+  - The section must be defined at the top-level inside the pipeline block
+  - Execute the Pipeline, or stage, on any available agent. For example: agent any
+     agent any {
+
+     }
+
+  # STEP 3 : 
+  . Stages:    
+  - Stages Containing a sequence of one or more stage directives
+  - The stages section is where the bulk of the "work" described by a Pipeline will be located.  
+  - At a minimum, it is recommended that stages contain at least one stage directive
+  - For each discrete part of the continuous delivery process, such as Build, Test, and Deploy.
+
+  stages { 
+    stage('Example') {
+
+    }
+  }  
+
+ # STEP 4 : 
+ . Steps:
+ - The steps section defines a series of one or more steps to be executed in a given stage directive.
+ - The steps section must contain one or more steps.
+
+ steps {
+     echo 'Hello World'
+  }               
+
+# SECTION 3 :
+  . How to use kubernetes agents in Jenkins pipeline? :
+
+  # STEP 1 :
+  . Kubernetes plugin and kubernetes cloud configuration :
+  - Go to Manage Jenkins -> Manage Plugins, search for Kubernetes Plugin and install it.
+  - Once install the kubernetes plugins then Fill in the Kubernetes plugin configuration.
+  - Manage Jenkins -> Manage Nodes and Clouds -> Configure Clouds -> Add a new cloud -> Kubernetes
+  - And enter the Kubernetes URL and Jenkins URL, 
+  - You can use the kubernetes proxy like kubernetes server certificates key
+  - You need create name kubernetes name space we can enter name space and credentials
+  - Below commands to create name space and to get the name space 
+
+    kubectl create name space <<name-space>>
+    kubectl get namespace 
+                
+  - Then after you can run the test connection if it is fine you can go to kubernetes pod template.
+
+  # STEP 2 :     
+  . Kubernetes Pod Template configuration :  
+  - We need to configure the image that will be used to spin up the agent pod. 
+  - Then we need to configure the pod template details, Under the kubernetes pod template section 
+  - we can fill the like pod name, name space, label, etc...
+  - Then we have fill the container template details like container name, docker image, working directory.
+
+  # STEP 3 :
+  . Declarative Pipeline agent as kubernetes :
+
+  - Basic syntax of declarative pipeline for run agent as kubernetes
+
+          pipeline {
+            agent {
+              kubernetes {
+                  ymlfile 'k8spod.yml'
+              }
+            }
+            stages {
+              steps{
+              }
+            }
+          }
+
+  # STEP 4 :
+  . Explanation of yml file for kubernetes agent :
+  - Below Explanation showing to the example 1
+  - In this scenario pipeline agent as kubernetes 
+  - In the yml file defination for to cretate the a pod 
+  - Run steps within a container by default.Steps will be container(name) {...} block instead of being executed the maven container.
+  - In this case we want to create container name of maven image using maven:alpine
+  - In our job stage to run the maven job, Node is having container like maven 
+  - This maven is map to the k8spod.yml file container name will be same 
+  - In the steps we have to create the maven version, Steps are depends on our requirements  
+  - If you have more steps, we have to add the steps under stages 
+  - The next stage is we have to run the our job thats means build our job 
+
+# SECTION 4 : 
+  . How to use docker agents in Jenkins pipeline? :
+
+  # STEP 1 :
+  . Docker plugin and Docker cloud configuration :
+  - Go to Manage Jenkins -> Manage Plugins, search for Docker and Docker pipeline Plugin and install it.
+  - Manage Jenkins -> Manage Nodes and Clouds -> Configure Clouds -> Add a new cloud -> Docker
+  - In the cloud configuration name as docker and Docker URI fill the your docker host IP  
+  - Then we have to add docker server credentials and run test connection if test connecton is succsess we have to go with Docker Agent Template
+
+  # STEP 2 :
+  . Docker Agent Template configuration :
+  - Add Docker template and fill in the details based on the the image.
+  - Labels - Identification for the docker host. It will be used in the Job configuration.
+  - Name - Name of the docker template. Here we use the same name as label
+  - Docker Image - The image that you created for the slave
+  - Remote Filing System Root - Home folder for the user you have created like /home/jenkins.
+  - Credentials - Add and enter the SSH username and password that you have created for the docker image.
+
+  # STEP 3 :
+  . Declarative Pipeline agent as Docker : 
+  - Basic syntax of declarative pipeline for run agent as Docker
+
+        pipeline {
+          agent {
+            docker { image 'image' }
+          }
+          stages {
+            stage ('test') {
+              steps {
+                sh 'node --version'
+              }
+            }
+          }
+        }
+
+  # STEP 4 :
+  . Explanation of Declarative pipeline for Docker agent :
+  - In this case pipeline top level agent docker
+  - Agent top level means all stages docker agent. Aspecially a container based on the node16:alpine image
+  - We can use the image as node:16-alpine. We can take image is its depends on our requirement.
+  - Here there is a stage part of pipeline node version (image version).
+  - Here pipeline in the step we can find out image version
+  - Under the stage we can write the steps and then we can create steps based on require.
+
+  - Comming to the example 3
+  - The global level agent setup none. Here we have no agent to find at a global level
+  - That means each stage we have define different containers definations
+  - In the this case we can take the graddle image, Because of i have single static agent with docker on it. 
+  - To run the container on the node specified at the top-level of the Pipeline, in the same workspace.
+  - When we run this job we will expect the image pull from the dockerhub.
+  - If you need more stages we can add the extra stages then we have to add the steps like clonerepo, build
+  - In this example we have to find the graddle version it can `mentined at the steps
+
+# EXAMPLES :
+  . Example 1 :
+  - Below pipeline showing the kubernetes agents in Jenkins pipeline :
+
+pipeline {
+  agent {
+    kubernetes {
+      yaml '''
+        apiVersion: v1
+        kind: Pod
+        spec:
+          containers:
+          - name: maven
+            image: maven:alpine
+            command:
+            - cat
+            tty: true
+        '''
+    }
+  }
+  stages {
+    stage('Run maven') {
+      steps {
+        container('maven') {
+          sh 'mvn -version'
+        }
+      }
+    }
+  }
+}
+
+# Example 2 :
+  . Below pipeline showing the Docker agents in Jenkins pipeline :
+
+pipeline {
+    agent {
+        docker { image 'node:16.13.1-alpine' }
+    }
+    stages {
+        stage('Test') {
+            steps {
+                sh 'node --version'
+            }
+        }
+    }
+}
+
+# Example 3 :
+
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            agent {
+                docker {
+                    image 'gradle:6.7-jdk11'
+                }
+            }
+            steps {
+                sh 'gradle --version'
+            }
+        }
+    }
+}
+
+# Example 4 :
+. Jenkins image deployment yml file :
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: rjamapax
+  name: vude-pod-jenkins
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jenkins
+  template:
+    metadata:
+      labels:
+        app: jenkins
+    spec:
+      containers:
+      - name: jenkins
+        image: jenkins/jenkins:lts
+        ports:
+         - name: http-port
+           containerPort: 8080
+
+# Example 5 :
+. Jenkins Service yml file :
+
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: rjamapax
+  name: vude-svc-jenkins
+  labels:
+    app: jenkins
+spec:
+  type: NodePort
+  ports:
+  - port: 8080      
+    protocol: TCP
+  selector:
+    app: jenkins

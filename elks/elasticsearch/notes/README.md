@@ -81,7 +81,6 @@ SECTION 3:
 SECTION 4:
 ----------
     # Elasticsearch Deployment spec
-
              apiVersion: apps/v1
              kind: Deployment
              metadata:

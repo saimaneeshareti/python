@@ -1,0 +1,40 @@
+Sample k8s Deployment spec
+
+apiversion: apps/V1
+kind: Deployment
+metadata:
+   name: nginx-dep
+   labels: 
+     app: nginx-app
+spec:
+   replicas: 1
+   selector:
+      matchlabels:
+         app: nginx-app
+    template:
+      metadata: 
+         app: nginx-app
+      spe:        
+        container:
+         - name: nginx-container
+           image: nginx 
+           ports:
+           - containerport: 80    
+=========================================================================
+
+Sample k8s node-port service spec
+
+apiversion: V1
+kind: service
+metadata:
+   name: service-np
+   labels:
+     app: nginx-app
+spec:
+  selector:
+    app: nginx-app
+  type: NodePort
+  ports:
+   - nodeport: 31000
+     port: 80
+     targetport: 80

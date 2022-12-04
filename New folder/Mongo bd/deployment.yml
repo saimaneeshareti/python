@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mongo
+  name: mongo
+  namespace: mongo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      containers:
+        - name: vude-mongo-c
+          image: mongo:4.4.6
+          env:
+          - name: MONGO_INITDB_ROOT_USERNAME
+            value: vudeadmin
+          - name: MONGO_INITDB_ROOT_PASSWORD
+            value: vudeshardis001
+          - name: MONGO_INITDB_DATABASE
+            value: admin
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 27017
+              name: httpm
+              protocol: TCP
+          volumeMounts:
+             - mountPath: /data/db
+               name: vude-mongo-v
+      volumes:
+        - name: vude-mongo-v
+          hostPath: 
+             path: /opt/assignments/mongo/data

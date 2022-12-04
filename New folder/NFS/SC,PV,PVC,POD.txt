@@ -1,0 +1,205 @@
+# StorageClass
+
+* A storageclass is a Kubernetes object that stores information about creating a persistent volume for your pod.
+  With a storageclass,you do not need to create a persistent volume separately before claiming it.
+
+. The configuration file below is an example of a StorageClass manifest file:
+
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+   name: vude-storageclass
+   namespace: asaimanx
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: Immediate
+allowVolumeExpansion: true
+
+Create a StorageClass: Here are the steps to create a StorageClass:
+
+Step 1: Create a file with vi or any editor of your choice:
+
+$ vi <sc.yaml>
+
+Step 2: Copy and paste the above StorageClass manifest file into the created YAML file 
+        and create the StorageClass with kubectl create command.
+
+$ kubectl create -f  sc.yaml
+
+storageclass.storage.k8s.io/my-storageclass created
+
+Step 3: Check the details of the StorageClass:
+
+$ kubectl get sc my-storageclass
+
+NAME                PROVISIONER                    RECLAIMPOLICY   VOLUMEBINDINGMODE   ALLOWVOLUMEEXPANSION   AGE
+
+vude-storageclass   kubernetes.io/no-provisioner   Delete          Immediate           true                   11s
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Persistent Volumes (PV)
+
+* A persistent volume offers persistent storage that enables your data to remain intact,
+  regardless of whether the containers to which the storage is connected are terminated.
+
+Follow the below steps to create a PersistentVolume:
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-sc
+  namespace: asaimanx
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: vude-storageclass
+  nfs:
+    path: /opt/nfs-pod/volume
+    server: 10.208.35.14
+
+Step 1: Create the YAML file.
+
+$ vim pv-config.yaml
+
+Step 2:Copy and paste the above configuration file into the YAML file created above. 
+
+*Accessmodes: This property defines how a PV should be mounted on the host.
+
+ReadWriteOnce: You can mount the PV as read-write by a single node.
+
+ReadOnlyMany: You can mount the PV as read-only by multiple nodes.
+
+ReadWriteMany: You can mount the PV as read-write by multiple nodes.
+
+Capacity storage: This property is used to set the amount of storage needed for the volume. 
+
+Step 3: Create the Persistent Volume using kubectl create command.
+
+$ kubectl create -f pv-config.yaml
+persistentvolume/my-volume created
+
+Step 4: Check the created PV to see if it is available.
+
+$ kubectl get pv -n <namespace>
+
+NAME       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS        CLAIM                STORAGECLASS        REASON   AGE
+sc-pv      10Gi       RWX            Recycle          Bound         asaimanx/sc-pvc      vude-storageclass            60s
+
+
+Step 5: Check the description of the PersistentVolume by running kubectl describe command.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+# Persistent Volume Claim
+
+* A persistent volume claim (PVC) is a request for storage, which is met by binding the PVC to a persistent volume (PV).
+  A PVC provides an abstraction layer to the underlying storage.
+
+
+Follow the below steps to create a PersistentVolumeClaim:
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: my-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+   resources:
+      requests:
+        storage: 3Gi
+
+Step 1: Create a YAML file.
+
+$ vi pvc-config.yaml
+
+Step 2: Copy and paste the above configuration file into the YAML file created above.
+
+Step 3: Create the PVC by running kubectl create command.
+
+$ kubectl create -f pvc-config.yaml
+persistentvolumeclaim/my-claim created
+
+Step 4: Check the status of the PVC by running kubectl get command.
+
+$ kubectl get pvc my-claim
+
+NAME       STATUS     VOLUME      CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+my-claim   Bound    my-volume       3Gi           RWO                      7m
+
+Step 5: Check the description of the PVC.
+
+$ kubectl describe pvc my-claim
+
+.As shown above, the status indicates a “Bound” state, which means the PVC and PV are now bound together.
+
+Step 6: Delete the PVC using kubectl delete command.
+
+$ kubectl delete pvc my-claim
+
+persistentvolumeclaim "my-claim" deleted
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+#The Difference Between PVs and PVCs in Kubernetes
+
+.PVs are created by the cluster administrator or dynamically by Kubernetes, whereas users/developers create PVCs.
+.PVs are cluster resources provisioned by an administrator, whereas PVCs are a user’s request for storage and resources. 
+.PVCs consume PVs resources, but not vice versa.
+.A PV is similar to a node in terms of cluster resources, while a PVC is like a Pod in the context of cluster resource consumption.
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+# How to Use PersistentVolumeClaim in a Pod
+
+A Pod can access storage with the help of a PVC, which will be used as a volume. PVC can be used in a Pod by first declaring a 
+“volumes” property in the Pod manifest file and specifying the claim name under the declared volume type “persistentVolumeClaim”
+property. It is essential that both the PVC and the Pod using it exist in the same namespace. 
+
+*The complete configuration file will look like this:
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  containers:
+  - name: stclass-test
+    image: nginx
+    volumeMounts:
+    - mountPath: "/app/data"
+      name: my-volume
+  volumes:
+  - name: my-volume
+    persistentVolumeClaim:
+      claimName: my-claim 
+
+Step 1: Create a YAML file.
+
+$ vim pvc-pod.yaml
+
+Step 2: Copy and paste the above Pod manifest file into the YAML file created above and create the Pod with kubectl create command.
+
+$ kubectl create -f pvc-pod.yaml
+pod/my-pod created
+
+Step 3: Check the status and the description of the Pod.
+
+$ kubectl get pod my-pod
+
+NAME        READY   STATUS    RESTARTS   AGE
+sc-pod      1/1     Running   0          101m
+
+
+
+
+  
+
+
+
+
+
+
+

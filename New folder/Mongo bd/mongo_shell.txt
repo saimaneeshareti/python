@@ -1,0 +1,219 @@
+. show dbs
+. db
+. show collections
+. use testdb - create db
+. db.ccreateCollections("movies")
+. show collections
+==> input movies
+. show dbs
+. db.movies.drop -- delete the collection
+. 
+insert your first document it's going to create collection automaticaly
+
+db.movies.insert() -- insert document
+db.movies.insertone() -- insert single document
+db.<collectionname>.insertmany() -- insert multiple documents
+
+db.movies.insert(
+{
+  "title": "The Matrix",
+  "released": 1999
+}
+)
+. show collections
+<movies>
+. show dbs
+<testdb>
+
+. db.<collection name>.find() -- view document
+. db.<collection name>.find().pretty() -- view document in json
+
+db.movies.insert(
+{
+  "title": "Avatar",
+  "released": 2009
+  "language": "English",
+  "director": "James Cameron"
+}
+)
+
+. db.<collection name>.find().pretty() -- view document in json
+
+db.movies.insert(
+{
+  "title": "Jeans",
+  "released": 1998
+  "language": "Tamil",
+  "director": "shankar",
+  "cast": ["Prasanth", "Aishwarya Rai"],          to define the list []
+  "reviews": [
+     {
+       "reviewer": "Alice",
+       "review": "Great movie to watch"         review is going to be a nested document: Embedded document or nested documents are those types 
+     },                                                                           of documents which contain a document inside another document.
+     {
+       "reviewer": "Bob",
+       "review": "What a wast of time"
+     }
+   ]
+}
+)
+
+. db.<collection name>.find().pretty() -- view document in json
+
+db.movies.insert(
+{
+  "title": "The Matrix",
+  "released": 1999
+}
+)
+
+db.movies.insert(
+{
+  "title": "Avatar",
+  "released": 2009
+  "language": "English",
+  "director": "James Cameron"
+}
+)
+
+db.movies.insert(
+{
+  "title": "Jeans",
+  "released": 1998
+  "language": "Tamil",
+  "director": "shankar",
+  "cast": ["Prasanth", "Aishwarya Rai"],         
+  "reviews": [
+     {
+       "reviewer": "Alice",
+       "review": "Great movie to watch"         
+     },                                                                           
+     {
+       "reviewer": "Bob",
+       "review": "What a wast of time"
+     }
+   ]
+}
+)
+
+# update document
+
+- Insert field 
+- Delete field
+- Update field
+
+- Insert field
+***************
+. db.<movies>.update(
+{"title": "The Matrix"}
+{$set: {"language": "English"}}
+)
+
+. db.<collection name>.find().pretty()
+
+- Delete field
+***************
+. db.<movies>.update(
+{"title": "The Matrix"}
+{$unset: {"language": "English"}}
+)
+
+- Update field
+***************
+. db.<movies>.update(
+{"title": "The Matrix"}
+{$set: {"language": "korean"}}
+)
+
+# Querying Document on fields:
+*******************************
+
+- equals, ne, gt, lt
+
+. db.movies.find({"released": 1999}).pretty()
+
+. db.movies.find({"director": "shankar"}).pretty()
+
+. db.movies.find({"released": {$gt: 2000}}).pretty()
+
+. db.movies.find({"released": {$lt: 2000}}).pretty()
+
+
+# selecting specific fields in the query
+*****************************************
+
+. db.movies.find({}, {"_id": 0}).pretty()
+
+. db.movies.find({}, {_"id": 0, "title":1, "released": 1, "language": 1}).pretty()
+
+# Counting documents
+*********************
+
+. db.movies.count()
+
+. db.movies.stats()
+
+. db.movies.count({"releaed": {$lt: 2000}})
+
+. db.movies.count({"releaed": {$gt: 2000}})
+
+. db.movies.count({"language": "English"}) 
+
+# Delete Documents
+*******************
+- selective
+- all documents
+
+. db.movies.delete
+
+. db.movies.deleteMany(
+
+. db.movies.deleteOne(
+
+. db.movies.deleteMany({"language": "Tamil"})
+
+. . db.movies.deleteMany({})
+==========================================================================================================
+. For CRUD operations in Mongo shell
+
+- db.emp_data.insertOne({
+                emp_id: "839",
+                name: "sai",
+                age: "25",
+                address: "hyderabad",
+                contact: "0928398191",
+                chipped: true                        
+            })
+
+- db.emp_data.insertMany([{
+      name: "sai",
+      age: "25",
+      emp_id: "786",
+      address: "nellore",
+      chipped: true},                                    
+        {name: "raj",
+        age: "24",
+        emp_id: "564",             
+        address: "hyderabad", 
+        chipped: true}])
+
+- db.emp_data.find({}).pretty()
+- db.emp_data.updateOne({emp_id: "564"}, {$set:{address: "pune"})
+- db.emp_data.deleteOne({emp_id:"786"})
+- db.emp_data.deleteMany({})
+===========================================================================================================
+
+ 
+
+
+
+
+  
+
+
+
+       
+ 
+
+

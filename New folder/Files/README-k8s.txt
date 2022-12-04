@@ -1,0 +1,104 @@
+# AIM :
+# Build an docker Image with open-ssh server enabled and an dummy users
+# create a kubernetes deployment and enable users to login to the pod.
+
+# Definition of done :
+# Create a dockerfile to accept build-args and Build the docker image by passing username,password.
+# Run the docker container and verify the Users and SSH.create a kubernetes deployment and enable users to login to the pod using SSH
+    
+# Pre-requisites :
+  1.User's
+  2.Docker image
+  3.kubernetes pod
+  4.kubernetes deployment
+
+# STEP1 :
+ - Create a dockerimage from dockerfile  :
+   # Create a Dockerfile and Build an docker Image with open-ssh server installed, and also created users from Dockerfile 
+      docker image build -t vudeusers:v2 --build-arg USER=vudeadmin
+
+   # Start the container from that docker image
+     docker run -it --name ssh-docker vudeusers:v1
+      
+   # Now,login to the container with created username
+      docker exec -it --user vudeadmin ssh-docker /bin/bash       
+
+
+# STEP2 :
+  - Deploy Docker Image to Kubernetes :
+   # Create a Manifest file for POD and Deployment
+   # Your Manifest file must have the authorized keys,it list the keys authorized to connect to the pod. 
+   # Create a POD and deployment using Kubectl command using the Manifest file
+     kubectl create -f pod.yml -n <namespace>
+     kubectl create -f dep.yml -n <namespace>
+
+# STEP3 :
+  - Create the service :
+    # create a Service of type LoadBalancer to expose the container port 22 to the world. You can set the port to the any value.
+    # Check that the service is up and is listening to your IP.
+      kubectl get service -n kube-system kube-dns
+
+    # Then check your connection
+      ssh username@podip -p podport  
+
+# STEP4 :
+  - sample commands :
+  1. Use any one of the editor to create a dockerfile.
+      vi <Dockerfile>
+
+  2. To build the docker image
+      docker image build -t <name> --build-arg USER=<name>
+
+  3. To run the docker container
+     docker run -it --name <container name> <image name>
+
+  4. Login container with username
+     docker exec -it --user <username> <container name> /bin/bash   
+
+  5.  5.  Create a pod
+      kubectl create -f pod.yml -n <namespace>
+     
+  6. Create a deployment
+     kubectl create -f dep.yml -n <namespace>   
+
+  7. Create the service  
+     kubectl get service -n kube-system kube-dns
+ 
+
+# STEP5 :      
+  - verifications :
+  1. Create a dockerfile to accept build-args -Done
+  2. Build the docker image by passing username,password -Done
+  3. Run the docker container and verify the Users -Done
+  4. Create a kubernetes Manifest file for POD and Deployment -Not-Done
+  5. Enable users to login to the pod using ssh -Not-Done
+
+# STEP6 :  
+  - Excutions commands :
+  1. Use any one of the editor to create a dockerfile.
+      vi Dockerfile
+
+  2. To build the docker image
+      docker image build -t vudeusers:v2 --build-arg USER=vudeadmin
+
+  3. To run the docker container
+      docker run -it --name ssh-docker vudeusers:v1
+
+  4. Login container with username
+     docker exec -it --user vudeadmin ssh-docker /bin/bash       
+
+  5.  Create a pod
+      kubectl create -f pod.yml -n <namespace>
+     
+  6. Create a deployment
+     kubectl create -f dep.yml -n <namespace>   
+
+  7. Create the service  
+     kubectl get service -n kube-system kube-dns  
+
+  8. check your connection
+      ssh username@podip -p podport   
+        
+# STEP7 :
+  -Referance :
+    # https://kubernetes.io/docs/tasks/debug/debug-application/get-shell-running-container/

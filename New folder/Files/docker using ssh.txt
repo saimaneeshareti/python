@@ -1,0 +1,56 @@
+# Aim :
+   # Deploy a ubuntu-20 docker container with ssh enabled. Create some dummy users while building containers. 
+   # Users must be able to login to the container and run commands using ssh.
+
+# Attributes :
+   1.Group's
+   2.User's
+   3.Password for user's
+   4.Build the docker image
+   5.Run the container 
+
+STEPS:
+  STEP1 : 
+   - Create SSH Key in docker file :
+      # To generate ssh keys using Docker file,so that when the container builds it will generate a pair of rsa keys.
+        RUN ssh-keygen -q -t rsa -N -f /home/docker/.ssh/id_rsa
+
+  STEP2 :
+   - Create a group and dummy user in docker file :   
+      # Now ceate a user group 'vude' in docker file
+      # Once create group now you create a user 'vude-hcl' under 'vudegroup'
+        RUN groupadd <vude> && useradd -ms /bin/bash -g <vude> <vude-hcl>
+        
+  STEP3 :
+    - Create a password for user:
+     # Now create a password to vude-hcl user 
+       useradd <USERNAME> && echo <PASSWORD> | passwd <USERNAME> --stdin   
+       stdin - to accept the password from standard input.
+  
+  STEP4 : 
+    - Build the docker image : 
+     # In docker file i'm using ubuntu as the base image for the container
+     # We can now build ubuntu docker image from the Dockerfile with the command
+        docker build -t ubuntu
+
+     # Above command compiles a new docker image called “ubuntu” based on the script inside the Dockerfile.
+     # The container listens on port 22 which is the default for ssh and finally runs the SSH daemon
+      
+  STEP5 : 
+    - Running the Docker container :
+      # Docker image just created name “ubuntu”.We also map docker port 22 to host port 2022.  
+         docker run -d -p 2022:22 ubuntu
+
+      # Our docker container is now running host port 2022
+      # To verify you can use the following command
+        docker ps -a
+
+  - References: 
+   # https://docker-docs.netlify.app/docker-cloud/cloud-swarm/ssh-key-setup/
+
+  
+     
+  
+
+
+    

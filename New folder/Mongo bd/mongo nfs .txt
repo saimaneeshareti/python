@@ -1,0 +1,40 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: mongo-sc
+  namespace: mongodb
+provisioner: k8s.io/minikube-hostpath
+reclaimPolicy: Retain
+volumeBindingMode: Immediate
+
+*****************************************************
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+ name: mongo-pv
+ namespace: mongodb
+ labels:
+  type: local
+spec:
+ storageClassName: mongo-sc
+ capacity:
+  storage: 1Gi
+ accessModes:
+  - ReadWriteOnce
+ hostPath:
+  path: "/mnt/mongo_data"
+***********************************************************
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: mongodb
+  name: mongo-pvc
+  namespace: mongodb
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: mongo-sc
+  resources:
+    requests:
+      storage: 1Gi
